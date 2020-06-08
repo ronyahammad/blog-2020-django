@@ -1,0 +1,55 @@
+{% extends 'base_index.html' %}
+{% block content %}
+<div >
+<h2 class="mt-4 mb-3">{{ object.title }}</h2>
+<img class="img-fluid rounded" src="{{post.topImage.url}}" alt="">
+<p>by {{ object.author }} in {{object.category}}| {{ object.date }}</p>
+<p>{{ object.body|safe }}</p>
+</div>
+<p><a href="{% url 'post_edit' post.pk %}">Edit</a> |
+<a href="{% url 'post_delete' post.pk %}">Delete</a></p>
+<p>Back to <a href="{% url 'home' %}">All Articles</a>.</p>
+<hr/>
+<div class="card my-4">
+<h5 class="card-header">Leave a Comment:</h5>
+{% load crispy_forms_tags %}
+<div class="card-body" >
+<form action="." method="post" >
+  {{comment_form|crispy}}
+  {% csrf_token %}
+  <button type="submit" class="btn btn-primary">Add Comment</button>
+</form>
+</div>
+</div>
+<h4>{{post.comments.count}} Comment </h4> 
+
+{% for comment in post.comments.all %}
+<div class="media mb-4">
+    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+    <div class="media-body">
+      <h5 class="mt-0">{{ comment.author }} says:</h5>
+      {{ comment }}
+      <hr/>
+<!--   reply section -->
+  
+    <div class="card my-4">
+    <h5 class="card-header">Reply</h5>
+{% load crispy_forms_tags %}
+<div class="card-body">
+  <div class="form-group">
+<form action="." method="post" >
+  {{comment_form|crispy}}
+  {% csrf_token %}
+  <input type='hidden' name='comment_id' value='{{comment.id}}'/>
+  <button type="submit" class="btn btn-primary">Add Reply</button>
+</form>
+  </div>
+</div>
+</div>
+<hr/>
+</div>
+</div>
+{% endfor %}
+
+
+{% endblock content %}

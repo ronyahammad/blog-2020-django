@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}User Profile{% endblock %}
+{% block content %}
+
+<p>User: {{ user.username }} logged in.</p>
+<p>Name: {{ user.name }} .</p>
+<p>Age: {{ user.Age }} .</p>
+<p><a href="{% url 'home' %}">homepage</a></p>
+
+
+{% endblock %}
+{% block categorylist %}
+{% for category in category_list %}
+            <ul>
+              <li class="category">{{ category }}</li>
+            </ul>    
+            {% endfor %}
+{% endblock categorylist %}
+
+{% block user_list %}
+{% for user in user_list %}
+                <ul>
+                  
+                    <li class="user">{{ user }}</li>
+                  
+                </ul>
+              {% endfor %}
+{% endblock user_list %}
