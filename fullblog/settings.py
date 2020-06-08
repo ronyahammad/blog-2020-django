@@ -1,3 +1,4 @@
+import dj_database_url
 """
 Django settings for fullblog project.
 
@@ -20,10 +21,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-#SECRET_KEY = '37ks@m!^d5h$&w4mpdcu#(-ux%p1l0p1e1$!_qm4t6gr8r!p*%'
+
 SECRET_KEY =os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -82,11 +83,15 @@ WSGI_APPLICATION = 'fullblog.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 DATABASES = {
+    
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
+
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'full',
@@ -144,8 +149,8 @@ CKEDITOR_UPLOAD_PATH='uploads/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT=os.path.join(BASE_DIR, 'media')
 EMAIL_HOST='smtp.sendgrid.net'
-EMAIL_HOST_USER='Rony01'
-EMAIL_HOST_PASSWORD='RONY12345'
+EMAIL_HOST_USER=os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD=os.environ.get('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
