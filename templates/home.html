@@ -13,7 +13,7 @@
   </div>
   <div class="card-footer text-muted">
     Posted on {{post.date|safe}} by
-    <a href="/">{{post.author}}</a>
+    <a href="{% url 'profile' post.author.pk %}" >{{post.author}}</a>
     in <a href="{% url 'category_list' post.category.pk %}">{{post.category}}</a> 
   </div>
 </div>

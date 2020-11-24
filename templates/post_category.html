@@ -14,7 +14,7 @@
   </div>
   <div class="card-footer text-muted">
     Posted on {{post.date|safe}} by
-    <a href="/">{{post.author}}</a>
+    <a href="{% url 'profile' post.author.profile.pk %}">{{post.author}}</a>
   </div>
 </div>  
 {% endfor %}

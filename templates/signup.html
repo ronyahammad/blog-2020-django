@@ -4,25 +4,27 @@
 {% block content %}
 <h2>Sign Up</h2>
 <form method="post">
-{% csrf_token %}
-{{ form|crispy }}
-<button type="submit">Sign Up</button>
+  {% csrf_token %}
+  {{ form|crispy }}
+  <button type="submit">Sign Up</button>
+  <br><br>
+  <a href="{% url 'home' %}">Home</a>
 </form>
 {% endblock content %}
 {% block categorylist %}
 {% for category in category_list %}
-            <ul>
-              <li class="category">{{ category }}</li>
-            </ul>    
-            {% endfor %}
+<ul>
+  <li class="category">{{ category }}</li>
+</ul>
+{% endfor %}
 {% endblock categorylist %}
 
 {% block user_list %}
 {% for user in user_list %}
-                <ul>
-                  
-                    <li class="user">{{ user }}</li>
-                  
-                </ul>
-              {% endfor %}
+<ul>
+
+  <li class="user">{{ user }}</li>
+
+</ul>
+{% endfor %}
 {% endblock user_list %}

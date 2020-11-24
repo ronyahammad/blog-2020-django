@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 from django.views.generic import ListView,DetailView
 from django.views.generic.edit import CreateView,UpdateView,DeleteView
 from .models import Post,Category,Comment
-from accounts.models import CustomUser
+from accounts.models import Profile
 from django.urls import reverse_lazy
 from django.shortcuts import render,get_object_or_404,reverse
 from django.contrib import messages
@@ -12,20 +12,20 @@ from django.views.generic.edit import FormMixin
 class CustomContentMixin:
     def get_context_data(self, **kwargs):
         context = super(CustomContentMixin, self).get_context_data(**kwargs)
-        context['user_list']= CustomUser.objects.all()
+        context['user_list']= Profile.objects.all()
         context['category_list']=Category.objects.all()
         return context
 
 
 class BlogappListView(CustomContentMixin,ListView):
-    model = Category,CustomUser
+    model = Category,Profile
     template_name = 'home.html'
     context_object_name='post_list'
     queryset=Post.objects.all()
-    paginate_by=2
+    paginate_by=7
     
    
-class BlogappUpdateView(CustomContentMixin,UpdateView,LoginRequiredMixin,UserPassesTestMixin):
+class BlogappUpdateView(LoginRequiredMixin, UserPassesTestMixin, CustomContentMixin,UpdateView ):
     model=Post
     template_name='post_edit.html'
     fields=('title','body','image','category')
@@ -34,10 +34,10 @@ class BlogappUpdateView(CustomContentMixin,UpdateView,LoginRequiredMixin,UserPas
         obj = self.get_object()
         return obj.author == self.request.user
     
-class BlogappDetailView(DetailView,LoginRequiredMixin,FormMixin):
+class BlogappDetailView(FormMixin,CustomContentMixin,DetailView):
     model=Post
     template_name='post_detail.html'
-    login_url='login'
+    #login_url='login'
     form_class=CommentForm
     def get_success_url(self):
         return reverse_lazy('post_detail', kwargs={'pk': self.object.pk})
@@ -45,7 +45,7 @@ class BlogappDetailView(DetailView,LoginRequiredMixin,FormMixin):
         context = super(BlogappDetailView, self).get_context_data(**kwargs)
         context['comments']=Comment.objects.filter(post=self.object)
         context['comment_form']=CommentForm()
-        context['user_list']= CustomUser.objects.all()
+        context['user_list']= Profile.objects.all()
         context['category_list']=Category.objects.all()
         return context
     def post(self, request, *args, **kwargs):
@@ -63,16 +63,17 @@ class BlogappDetailView(DetailView,LoginRequiredMixin,FormMixin):
         return super().form_valid(comment_form)
        
 
-class BlogappDeleteView(CustomContentMixin,DeleteView,LoginRequiredMixin,UserPassesTestMixin):
+class BlogappDeleteView(LoginRequiredMixin, UserPassesTestMixin, CustomContentMixin, DeleteView):
     model=Post
     template_name='post_delete.html'
-    success_url=reverse_lazy('post_list')
+    success_url=reverse_lazy('home')
     login_url='login'
     def test_func(self): 
         obj = self.get_object()
         return obj.author == self.request.user
     
-class BlogappCreateView(CustomContentMixin,CreateView,LoginRequiredMixin):
+
+class BlogappCreateView(LoginRequiredMixin, CustomContentMixin, CreateView):
     model=Post
     template_name='post_new.html'
     login_url='login'
@@ -87,7 +88,7 @@ class BlogappCreateView(CustomContentMixin,CreateView,LoginRequiredMixin):
 class SearchView(CustomContentMixin,ListView):
     model=Post
     template_name='search.html'
-    paginate_by=2
+    paginate_by=7
     def get_queryset(self):
         query=self.request.GET['query']
         post_listTitle=Post.objects.filter(title__icontains=query)
@@ -98,7 +99,7 @@ class SearchView(CustomContentMixin,ListView):
 class CategoryListView(CustomContentMixin,ListView):
     model=Post
     template_name='post_category.html'
-    paginate_by=2
+    paginate_by=7
     def get_queryset(self):
         self.category=get_object_or_404(Category,pk=self.kwargs['pk'])
         return Post.objects.filter(category=self.category)

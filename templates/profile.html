@@ -1,11 +1,53 @@
-{% extends 'base.html' %}
+{% extends 'base_index.html' %}
 {% block title %}User Profile{% endblock %}
 {% block content %}
-
-<p>User: {{ user.username }} logged in.</p>
-<p>Name: {{ user.name }} .</p>
-<p>Age: {{ user.Age }} .</p>
-<p><a href="{% url 'home' %}">homepage</a></p>
+<h2>Profile Detail</h2>
+<p><a class="btn btn-primary" href="{% url 'home' %}">homepage</a></p>
+{% if user.is_authenticated %}
+<p><a class="btn btn-info" href="{% url 'profile_edit' profile.pk %}">Edit Profile</a></p>
+{% endif %}
+<div class="container">
+  <div class="row justify-content-start">
+    <div class="col-3">
+      <p>Name:</p>
+    </div>
+    <div class="col-6">
+      <p>{{ profile.name }}.</p>
+    </div>
+    </div>
+    <div class="row justify-content-start">
+    <div class="col-3">
+      <p>Bio:</p>
+    </div>
+    <div class="col-6">
+      <p>{{ profile.bio }} .</p>
+    </div>
+    </div>
+    <div class="row justify-content-start">
+      <div class="col-3">
+        <p>Location:</p>
+      </div>
+      <div class="col-6">
+        <p>{{ profile.location }} .</p>
+      </div>
+    </div>
+        <div class="row justify-content-start">
+          <div class="col-3">
+            <p>Date of birth:</p>
+          </div>
+          <div class="col-6">
+            <p>{{ profile.birthdate }}.</p>
+          </div>
+        </div>
+                <div class="row justify-content-start">
+                  <div class="col-3">
+                    <p>Gender:</p>
+                  </div>
+                  <div class="col-6">
+                    <p>{{ profile.gender }}.</p>
+                  </div>
+                </div>
+    </div>
 
 
 {% endblock %}

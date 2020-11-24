@@ -3,7 +3,7 @@
 <div >
 <h2 class="mt-4 mb-3">{{ object.title }}</h2>
 <img class="img-fluid rounded" src="{{post.topImage.url}}" alt="">
-<p>by {{ object.author }} in {{object.category}}| {{ object.date }}</p>
+<p>by <a href="{% url 'profile' object.author.pk %}">{{ object.author }}</a> in {{object.category}}| {{ object.date }}</p>
 <p>{{ object.body|safe }}</p>
 </div>
 <p><a href="{% url 'post_edit' post.pk %}">Edit</a> |

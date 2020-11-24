@@ -1,12 +1,15 @@
-from django.conf import settings
-from django.contrib.auth import get_user_model
 from django.db import models
+from django.conf import settings
+#from django.contrib.auth.models import User
+#from accounts.models import Profile
+from django.contrib.auth import get_user_model
 from django.urls import reverse
 from ckeditor.fields import RichTextField 
 from django.utils.timezone import now,datetime
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from .validators import validate_file_size
+
 
 class Category(models.Model):
     title=models.CharField(max_length=200)
@@ -18,7 +21,7 @@ class Post(models.Model):
     image=models.FileField(upload_to="mediaphoto",validators=[validate_file_size])
     topImage=ImageSpecField(source='image',processors=[ResizeToFill(750,300)],format='PNG',options={'quality':60})  
     date = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(get_user_model(),on_delete=models.CASCADE,)
+    author = models.ForeignKey(get_user_model(),on_delete=models.CASCADE)
     category=models.ForeignKey(Category,on_delete=models.CASCADE)
     def __str__(self):
         return self.title
