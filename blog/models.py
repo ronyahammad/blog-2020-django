@@ -9,7 +9,7 @@ from django.utils.timezone import now,datetime
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from .validators import validate_file_size
-
+from django.utils import timezone
 
 class Category(models.Model):
     title=models.CharField(max_length=200)
@@ -20,7 +20,7 @@ class Post(models.Model):
     body=RichTextField(blank=True,null=True)
     image=models.FileField(upload_to="mediaphoto",validators=[validate_file_size])
     topImage=ImageSpecField(source='image',processors=[ResizeToFill(750,300)],format='PNG',options={'quality':60})  
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField('date created', default=timezone.now)
     author = models.ForeignKey(get_user_model(),on_delete=models.CASCADE)
     category=models.ForeignKey(Category,on_delete=models.CASCADE)
     def __str__(self):

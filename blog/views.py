@@ -18,13 +18,12 @@ class CustomContentMixin:
 
 
 class BlogappListView(CustomContentMixin,ListView):
+    paginate_by = 7
     model = Category,Profile
     template_name = 'home.html'
     context_object_name='post_list'
-    queryset=Post.objects.all()
-    paginate_by=7
+    queryset=Post.objects.order_by('-date')
     
-   
 class BlogappUpdateView(LoginRequiredMixin, UserPassesTestMixin, CustomContentMixin,UpdateView ):
     model=Post
     template_name='post_edit.html'
