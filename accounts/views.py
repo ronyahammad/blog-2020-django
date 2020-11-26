@@ -77,7 +77,7 @@ class ProfileDetailView(CustomContentMixin,DetailView):
     def get_user_profile(self,pk):
         return get_object_or_404(Profile,pk=pk)
     
-
+    
 class ProfileEditView(LoginRequiredMixin, UserPassesTestMixin, CustomContentMixin,UpdateView):
     model=Profile
     template_name='profile_edit.html'

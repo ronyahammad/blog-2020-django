@@ -155,9 +155,10 @@
                   </div>
                  
                   {% for category in category_list %}
+                  <ul>
                   <li>
                   <a  href="{% url 'category_list' category.pk %}" class="user">{{ category }}</a>    
-            </li>
+            </li></ul>
               {% endfor %}
           
           </div>
