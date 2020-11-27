@@ -88,3 +88,4 @@ webencodings==0.5.1
 whitenoise==5.1.0
 wrapt==1.11.2
 zope.interface==5.1.0
+python-decouple==3.3

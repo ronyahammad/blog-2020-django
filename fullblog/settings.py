@@ -42,18 +42,19 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'ckeditor',
     'imagekit',
     'ckeditor_uploader',
     'crispy_forms',
-    'whitenoise.runserver_nostatic',
+    
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -145,15 +146,17 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')] 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-
 CRISPY_TEMPLATE_PACK='bootstrap4'
+CKEDITOR_UPLOAD_PATH='uploads/'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT=os.path.join(BASE_DIR, 'media')
+
 #AUTH_USER_MODEL = 'accounts.CustomUser'
 LOGIN_URL = 'accounts/login'
 LOGOUT_REDIRECT_URL = 'home'
 LOGIN_REDIRECT_URL = 'home'
-CKEDITOR_UPLOAD_PATH='uploads/'
-MEDIA_URL = '/media/'
-MEDIA_ROOT=os.path.join(BASE_DIR, 'media')
+
 EMAIL_HOST = 'smtp.sendgrid.net'
 EMAIL_HOST_USER = 'apikey'
 EMAIL_HOST_PASSWORD = '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'
@@ -161,6 +164,5 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 DEFAULT_FROM_EMAIL = 'no_reply@webservices.com'
-CKEDITOR_UPLOAD_PATH='uploads/'
 
 django_heroku.settings(locals())
