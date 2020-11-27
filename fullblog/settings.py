@@ -25,9 +25,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-SECRET_KEY = '37ks@m!^d5h$&w4mpdcu#(-ux%p1l0p1e1$!_qm4t6gr8r!p*%'
+SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', cast=bool)
 
 ALLOWED_HOSTS = ['blog-2020-django.herokuapp.com', 'localhost']
 
@@ -157,12 +157,12 @@ LOGIN_URL = 'accounts/login'
 LOGOUT_REDIRECT_URL = 'home'
 LOGIN_REDIRECT_URL = 'home'
 
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'apikey'
-EMAIL_HOST_PASSWORD = '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'
-EMAIL_PORT = 587
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = config('EMAIL_PORT',cast=int)
 EMAIL_USE_TLS = True
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-DEFAULT_FROM_EMAIL = 'no_reply@webservices.com'
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL')
 
 django_heroku.settings(locals())
